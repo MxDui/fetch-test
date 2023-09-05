@@ -3,16 +3,27 @@ import { useMutation } from "react-query";
 import Auth from "../services/Auth";
 
 function Login() {
+  const [emailError, setEmailError] = useState<string | null>(null);
   const [formData, setFormData] = useState({ name: "", email: "" });
 
-  const mutation = useMutation(Auth.loginUser, {
-    onSuccess: () => {
-      // TODO: Redirect to dashboard
-    },
-    onError: (error) => {
-      console.error("Error logging in:", error);
-    },
-  });
+  const isValidEmail = (email: string) => {
+    const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    return regex.test(email);
+  };
+
+  const mutation = useMutation(
+    (data: { name: string; email: string }) =>
+      Auth.loginUser(data.name, data.email),
+    {
+      onSuccess: () => {
+        // TODO: Redirect to dashboard
+        alert("Logged in!");
+      },
+      onError: (error) => {
+        console.error("Error logging in:", error);
+      },
+    }
+  );
 
   const handleInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,7 +34,17 @@ function Login() {
   );
 
   const handleLogin = () => {
-    mutation.mutate(formData);
+    if (!isValidEmail(formData.email)) {
+      setEmailError("Please enter a valid email address.");
+      return;
+    }
+
+    setEmailError(null);
+
+    mutation.mutate({
+      name: formData.name,
+      email: formData.email,
+    });
   };
 
   return (
@@ -47,8 +68,11 @@ function Login() {
             placeholder="Email"
             value={formData.email}
             onChange={handleInputChange}
-            className="w-full px-3 py-2 border rounded-md"
+            className={`w-full px-3 py-2 border rounded-md ${
+              emailError ? "border-red-500" : ""
+            }`}
           />
+          {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
           <button
             onClick={handleLogin}
             className="w-full bg-purple-600 text-white p-2 rounded-md hover:bg-purple-700 transition duration-300"

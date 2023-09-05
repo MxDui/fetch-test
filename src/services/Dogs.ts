@@ -1,28 +1,38 @@
 import axios from "axios";
+import { SearchDogsParams, Dog, Match } from "../types";
 
 class Dogs {
-  BASE_URL = "https://frontend-take-home-service.fetch.com";
+  static BASE_URL = "https://frontend-take-home-service.fetch.com";
 
-  getBreeds() {
-    return axios.get(`${this.BASE_URL}/dogs/breeds`);
+  // Assuming the API returns a list of strings representing breeds
+  getBreeds(): Promise<string[]> {
+    return axios
+      .get<string[]>(`${Dogs.BASE_URL}/dogs/breeds`)
+      .then((res) => res.data);
   }
 
-  searchDogs(params: any) {
+  // Assuming the API returns an object with a key 'resultIds' containing a list of dog IDs
+  searchDogs(params: SearchDogsParams): Promise<string[] | Dog[]> {
     return axios
-      .get(`${this.BASE_URL}/dogs/search`, { params })
+      .get<{ resultIds: string[] }>(`${Dogs.BASE_URL}/dogs/search`, { params })
       .then((response) => {
         return this.fetchDogs(response.data.resultIds);
       });
   }
 
-  fetchDogs(ids: string[]) {
-    return axios.post(`${this.BASE_URL}/dogs`, ids);
+  // Assuming the API returns a list of Dog objects
+  fetchDogs(ids: string[]): Promise<Dog[]> {
+    return axios
+      .post<Dog[]>(`${Dogs.BASE_URL}/dogs`, ids)
+      .then((res) => res.data);
   }
 
-  matchDogs(favorites: string[]) {
-    return axios.post(`${this.BASE_URL}/dogs/match`, favorites);
+  // Assuming the API returns an object of type Match
+  matchDogs(favorites: string[]): Promise<Match> {
+    return axios
+      .post<Match>(`${Dogs.BASE_URL}/dogs/match`, favorites)
+      .then((res) => res.data);
   }
 }
 
 export default new Dogs();
-    

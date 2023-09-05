@@ -16,4 +16,18 @@ interface Location {
   county: string;
 }
 
-export type { Dog, Location };
+interface Match {
+  match: string;
+}
+
+interface SearchDogsParams {
+  breeds?: string[];
+  zipCodes?: string[];
+  ageMin?: number;
+  ageMax?: number;
+  size?: number;
+  from?: string;
+  sort?: string;
+}
+
+export type { Dog, Location, Match, SearchDogsParams };
