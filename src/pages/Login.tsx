@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { useMutation } from "react-query";
 import Auth from "../services/Auth";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [emailError, setEmailError] = useState<string | null>(null);
@@ -11,13 +12,15 @@ function Login() {
     return regex.test(email);
   };
 
+  const navigate = useNavigate();
+
   const mutation = useMutation(
     (data: { name: string; email: string }) =>
       Auth.loginUser(data.name, data.email),
     {
       onSuccess: () => {
         // TODO: Redirect to dashboard
-        alert("Logged in!");
+        navigate("/search");
       },
       onError: (error) => {
         console.error("Error logging in:", error);

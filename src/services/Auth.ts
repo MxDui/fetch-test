@@ -6,7 +6,7 @@ class Auth {
   async loginUser(name: string, email: string) {
     try {
       const response = await axios.post(
-        `${Auth.BASE_URL}/auth/login`,
+        `${Auth.BASE_URL}/auth/login/`,
         {
           name,
           email,
