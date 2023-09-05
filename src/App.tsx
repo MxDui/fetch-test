@@ -1,12 +1,12 @@
-import Login from "./pages/Login";
 import { QueryClient, QueryClientProvider } from "react-query";
+import Search from "./pages/Search";
 
 const queryClient = new QueryClient();
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Login />
+      <Search />
     </QueryClientProvider>
   );
 }
