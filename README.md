@@ -20,7 +20,7 @@ This application allows users to browse and search through a database of shelter
 2. Navigate to the project directory:
 
    ```
-   cd fetch-frontend-exercise
+   cd fetch-test
    ```
 
 3. Install the dependencies:
