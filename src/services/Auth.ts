@@ -5,19 +5,18 @@ class Auth {
 
   async loginUser(name: string, email: string) {
     try {
-      const response = await axios.post(
-        `${Auth.BASE_URL}/auth/login/`,
-        {
-          name,
-          email,
+      const body = {
+        name,
+        email,
+      };
+
+      console.log("body", body);
+      const response = await axios.post(`${Auth.BASE_URL}/auth/login`, body, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
         },
-        {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      });
 
       return response.data;
     } catch (error) {

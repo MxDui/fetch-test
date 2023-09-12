@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Dog } from "../types";
 import Dogs from "../services/Dogs";
 import { useQuery, useMutation } from "react-query";
+import DogCard from "../components/DogCard";
 
 const Search: React.FC = () => {
   const [selectedBreeds, setSelectedBreeds] = useState<string[]>([]);
@@ -92,32 +93,16 @@ const Search: React.FC = () => {
         </button>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {dogs.map((dog) => (
-          <motion.div
-            key={dog.id}
-            className="rounded overflow-hidden shadow-lg"
-          >
-            <img
-              className="w-full h-64 object-cover"
-              src={dog.img}
-              alt={dog.name}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {dogs.map((dog) => (
+            <DogCard
+              key={dog.id}
+              dog={dog}
+              isFavorite={favorites.includes(dog.id)}
+              onToggleFavorite={toggleFavorite}
             />
-            <div className="px-6 py-4 bg-white bg-opacity-75">
-              <div className="font-bold text-xl mb-2">{dog.name}</div>
-              <p>Age: {dog.age}</p>
-              <p>Zip Code: {dog.zip_code}</p>
-              <p>Breed: {dog.breed}</p>
-              <button
-                className={`mt-2 p-2 w-full block text-center ${
-                  favorites.includes(dog.id) ? "bg-red-500" : "bg-green-500"
-                } text-white rounded-md hover:opacity-80 transition duration-300`}
-                onClick={() => toggleFavorite(dog.id)}
-              >
-                {favorites.includes(dog.id) ? "Unfavorite" : "Favorite"}
-              </button>
-            </div>
-          </motion.div>
-        ))}
+          ))}
+        </div>
       </div>
       <div className="mt-8 flex justify-center">
         <button

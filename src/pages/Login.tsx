@@ -19,11 +19,12 @@ function Login() {
       Auth.loginUser(data.name, data.email),
     {
       onSuccess: () => {
-        // TODO: Redirect to dashboard
+        console.log("Logged in successfully");
         navigate("/search");
       },
-      onError: (error) => {
-        console.error("Error logging in:", error);
+      onError: (error: any) => {
+        console.error("Error logging in:", error.message);
+        setEmailError(error.message || "An unexpected error occurred.");
       },
     }
   );
